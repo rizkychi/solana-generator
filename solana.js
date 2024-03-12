@@ -1,7 +1,9 @@
 import moment from "moment";
+import fs from "fs";
 import fetch from "node-fetch";
 import { Keypair } from "@solana/web3.js";
 import nacl from "tweetnacl";
+import base58 from 'bs58'
 import pkg from "tweetnacl-util";
 const {decodeUTF8} = pkg;
 const invite_code = "2qe6hy";
@@ -53,6 +55,12 @@ const mains = async () => {
 
   console.log('Sign user: ', data.msg);
   
+  if (data.code == 200) {
+    fs.appendFile('address_secret.txt', base58.encode(keypair.secretKey) + "\n", function (err) {
+      if (err) throw err;
+      console.log('Saved!');
+    });
+  }
 }
 
 async function delay(ms) {
